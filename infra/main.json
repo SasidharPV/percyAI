@@ -15,7 +15,7 @@
     },
     "hostingPlanName": {
       "type": "string",
-      "defaultValue": "[format('hosting-plan-{0}', parameters('resourceToken'))]",
+      "defaultValue": "PercyAIChatBot",
       "metadata": {
         "description": "Name of App Service plan"
       }
