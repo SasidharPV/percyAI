@@ -623,7 +623,7 @@ module web_docker './app/web.bicep' = if (hostingModel == 'container') {
     name: '${websiteName}-docker'
     location: location
     tags: union(tags, { 'azd-service-name': 'web-docker' })
-    dockerFullImageName: 'fruoccopublic.azurecr.io/rag-webapp'
+    dockerFullImageName: 'venkatasasidhar/frontend-percyai:percyaifrontend'
     appServicePlanId: hostingplan.outputs.name
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     healthCheckPath: '/api/health'
