@@ -1,6 +1,6 @@
 ---
 name: Percy AI  (Python)
-description: Chat with your data using OpenAI and AI Search with Python.
+description: Percy AI using OpenAI and AI Search with Python.
 languages:
 - python
 - typescript
@@ -22,11 +22,11 @@ urlFragment: chat-with-your-data-solution-accelerator
 ---
 <!-- YAML front-matter schema: https://review.learn.microsoft.com/en-us/help/contribute/samples/process/onboarding?branch=main#supported-metadata-fields-for-readmemd -->
 
-# Chat with your data - Solution accelerator
+# Percy AI - Enterprise AI
 
 
  ##### Table of Contents
-- [Chat with your data - Solution accelerator](#chat-with-your-data---solution-accelerator)
+- [Percy AI - Enterprise AI](#Percy-AI-Enterprise-AI)
         - [Table of Contents](#table-of-contents)
   - [User story](#user-story)
     - [About this repo](#about-this-repo)
@@ -46,7 +46,7 @@ urlFragment: chat-with-your-data-solution-accelerator
     - [Licensing](#licensing)
   - [Disclaimers](#disclaimers)
 ## User story
-Welcome to the *Chat with your data* Solution accelerator repository! The *Chat with your data* Solution accelerator is a powerful tool that combines the capabilities of Azure AI Search and Large Language Models (LLMs) to create a conversational search experience. This solution accelerator uses an Azure OpenAI GPT model and an Azure AI Search index generated from your data, which is integrated into a web application to provide a natural language interface, including [speech-to-text](docs/speech_to_text.md) functionality, for search queries. Users can drag and drop files, point to storage, and take care of technical setup to transform documents. Everything can be deployed in your own subscription to accelerate your use of this technology.
+Welcome to the *Percy AI* Enterprise AI repository! The *Percy AI* Enterprise AI is a powerful tool that combines the capabilities of Azure AI Search and Large Language Models (LLMs) to create a conversational search experience. This Enterprise AI uses an Azure OpenAI GPT model and an Azure AI Search index generated from your data, which is integrated into a web application to provide a natural language interface, including [speech-to-text](docs/speech_to_text.md) functionality, for search queries. Users can drag and drop files, point to storage, and take care of technical setup to transform documents. Everything can be deployed in your own subscription to accelerate your use of this technology.
 
 ![Solution Architecture - PERCY AI](/docs/images/cwyd-solution-architecture.png)
 
@@ -79,7 +79,7 @@ Here is a comparison table with a few features offered by Azure, an available Gi
 
 | Name	| Feature or Sample? |	What is it? | When to use? |
 | ---------|---------|---------|---------|
-|["Chat with your data" Solution Accelerator](https://aka.ms/ChatWithYourDataSolutionAccelerator) - (This repo)	| Azure sample | End-to-end baseline RAG pattern sample that uses Azure AI Search as a retriever.	| This sample should be used by Developers when the  RAG pattern implementations provided by Azure are not able to satisfy business requirements. This sample provides a means to customize the solution. Developers must add their own code to meet requirements, and adapt with best practices according to individual company policies. |
+|["Percy AI" Enterprise AI](https://aka.ms/ChatWithYourDataSolutionAccelerator) - (This repo)	| Azure sample | End-to-end baseline RAG pattern sample that uses Azure AI Search as a retriever.	| This sample should be used by Developers when the  RAG pattern implementations provided by Azure are not able to satisfy business requirements. This sample provides a means to customize the solution. Developers must add their own code to meet requirements, and adapt with best practices according to individual company policies. |
 |[Azure OpenAI on your data](https://learn.microsoft.com/azure/ai-services/openai/concepts/use-your-data) | Azure feature | Azure OpenAI Service offers out-of-the-box, end-to-end RAG implementation that uses a REST API or the web-based interface in the Azure AI Studio to create a solution that connects to your data to enable an enhanced chat experience with Azure OpenAI ChatGPT models and Azure AI Search. | This should be the first option considered for developers that need an end-to-end solution for Azure OpenAI Service with an Azure AI Search retriever. Simply select supported data sources, that ChatGPT model in Azure OpenAI Service , and any other Azure resources needed to configure your enterprise application needs. |
 |[Azure Machine Learning prompt flow](https://learn.microsoft.com/azure/machine-learning/concept-retrieval-augmented-generation)	| Azure feature | RAG in Azure Machine Learning is enabled by integration with Azure OpenAI Service for large language models and vectorization. It includes support for Faiss and Azure AI Search as vector stores, as well as support for open-source offerings, tools, and frameworks such as LangChain for data chunking. Azure Machine Learning prompt flow offers the ability to test data generation, automate prompt creation, visualize prompt evaluation metrics, and integrate RAG workflows into MLOps using pipelines.  | When Developers need more control over processes involved in the development cycle of LLM-based AI applications, they should use Azure Machine Learning prompt flow to create executable flows and evaluate performance through large-scale testing. |
 |[ChatGPT + Enterprise data with Azure OpenAI and AI Search demo](https://github.com/Azure-Samples/azure-search-openai-demo) | Azure sample | RAG pattern demo that uses Azure AI Search as a retriever. | Developers who would like to use or present an end-to-end demonstration of the RAG pattern should use this sample. This includes the ability to deploy and test different retrieval modes, and prompts to support business use cases. |
@@ -123,7 +123,7 @@ Note: Some of the sample data included with this accelerator was generated using
 #### Employee Onboarding Scenario
 The sample data illustrates how this accelerator could be used for an employee onboarding scenario in across industries.
 
-In this scenario, a newly hired employee is in the process of onboarding to their organization. Leveraging the solution accelerator, she navigates through the extensive offerings of her organization’s health and retirement benefits. With the newly integrated chat history capabilities, they can revisit previous conversations, ensuring continuity and context across multiple days of research. This functionality allows the new employee to efficiently gather and consolidate information, streamlining their onboarding experience. [For more details, refer to the README](docs/employee_assistance.md).
+In this scenario, a newly hired employee is in the process of onboarding to their organization. Leveraging the Enterprise AI, she navigates through the extensive offerings of her organization’s health and retirement benefits. With the newly integrated chat history capabilities, they can revisit previous conversations, ensuring continuity and context across multiple days of research. This functionality allows the new employee to efficiently gather and consolidate information, streamlining their onboarding experience. [For more details, refer to the README](docs/employee_assistance.md).
 
 
 ---
@@ -153,7 +153,7 @@ In this scenario, a newly hired employee is in the process of onboarding to thei
 
 ### Pricing Considerations
 
-This solution accelerator deploys multiple resources. Evaluate the cost of each component prior to deployment.
+This Enterprise AI deploys multiple resources. Evaluate the cost of each component prior to deployment.
 
 The following are links to the pricing details for some of the resources:
 - [Azure OpenAI service pricing](https://azure.microsoft.com/pricing/details/cognitive-services/openai-service/). GPT and embedding models are charged separately.
@@ -203,7 +203,7 @@ switch to a lower version. To find out which versions are supported in different
 
 ### Resource links
 
-This solution accelerator deploys the following resources. It's critical to comprehend the functionality of each. Below are the links to their respective documentation:
+This Enterprise AI deploys the following resources. It's critical to comprehend the functionality of each. Below are the links to their respective documentation:
 - [Application Insights overview - Azure Monitor | Microsoft Learn](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview?tabs=net)
 - [Azure OpenAI Service - Documentation, quickstarts, API reference - Azure AI services | Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/use-your-data)
 - [Using your data with Azure OpenAI Service - Azure OpenAI | Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/use-your-data)

@@ -5,7 +5,7 @@
     "id": "${{TEAMS_APP_ID}}",
     "packageName": "com.microsoft.teams.extension",
     "developer": {
-        "name": "James Hunter",
+        "name": "Sasidhar Pendyala",
         "websiteUrl": "https://www.microsoft.com",
         "privacyUrl": "https://www.microsoft.com/en-us/privacystatement",
         "termsOfUseUrl": "https://www.microsoft.com/en-us/servicesagreement"
@@ -15,12 +15,12 @@
         "outline": "CogSearchOutline.png"
     },
     "name": {
-        "short": "Chat with Data",
-        "full": "Chat with your own Data"
+        "short": "Percy AI",
+        "full": "Enterprise AI for IT Solutions"
     },
     "description": {
         "short": "A tool that combines the capabilities of Azure AI Search and LLMs.",
-        "full": "The 'Chat with your data' Solution Accelerator is a powerful tool that combines the capabilities of Azure Cognitive Search and Large Language Models (LLMs) to create a conversational search experience. This solution accelerator uses an Azure OpenAI GPT model and an Azure Cognitive Search index generated from your data, which is integrated into a web application to provide a natural language interface for search queries."
+        "full": "The 'Percy AI' Enterprise Chatbot is a powerful tool that combines the capabilities of Azure Cognitive Search and Large Language Models (LLMs) to create a conversational search experience. This solution accelerator uses an Azure OpenAI GPT model and an Azure Cognitive Search index generated from your data, which is integrated into a web application to provide a natural language interface for search queries."
     },
     "accentColor": "#FFFFFF",
     "bots": [
