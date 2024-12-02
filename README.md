@@ -1,234 +1,462 @@
----
-name: Percy AI  (Python)
-description: Percy AI using OpenAI and AI Search with Python.
-languages:
-- python
-- typescript
-- bicep
-- azdeveloper
-products:
-- azure-openai
-- azure-cognitive-search
-- azure-app-service
-- azure
-- azure-bot-service
-- document-intelligence
-- azure-functions
-- azure-storage-accounts
-- azure-speech
-page_type: sample
-urlFragment: chat-with-your-data-solution-accelerator
+Sure, let's document the project. Here is a structured documentation based on the files you have provided:
 
----
-<!-- YAML front-matter schema: https://review.learn.microsoft.com/en-us/help/contribute/samples/process/onboarding?branch=main#supported-metadata-fields-for-readmemd -->
+## Project Overview
 
-# Percy AI - Enterprise AI
-
-
- ##### Table of Contents
-- [Percy AI - Enterprise AI](#Percy-AI-Enterprise-AI)
-        - [Table of Contents](#table-of-contents)
-  - [User story](#user-story)
-    - [About this repo](#about-this-repo)
-    - [When should you use this repo?](#when-should-you-use-this-repo)
-    - [Key features](#key-features)
-    - [Target end users](#target-end-users)
-    - [Industry scenario](#industry-scenario)
-  - [Deploy](#deploy)
-    - [Pre-requisites](#pre-requisites)
-    - [Products used](#products-used)
-    - [Required licenses](#required-licenses)
-    - [Pricing Considerations](#pricing-considerations)
-    - [Deploy instructions](#deploy-instructions)
-    - [Testing the deployment](#testing-the-deployment)
-  - [Supporting documentation](#supporting-documentation)
-    - [Resource links](#resource-links)
-    - [Licensing](#licensing)
-  - [Disclaimers](#disclaimers)
-## User story
-Welcome to the *Percy AI* Enterprise AI repository! The *Percy AI* Enterprise AI is a powerful tool that combines the capabilities of Azure AI Search and Large Language Models (LLMs) to create a conversational search experience. This Enterprise AI uses an Azure OpenAI GPT model and an Azure AI Search index generated from your data, which is integrated into a web application to provide a natural language interface, including [speech-to-text](docs/speech_to_text.md) functionality, for search queries. Users can drag and drop files, point to storage, and take care of technical setup to transform documents. Everything can be deployed in your own subscription to accelerate your use of this technology.
-
-![Solution Architecture - PERCY AI](/docs/images/cwyd-solution-architecture.png)
-
-### About this repo
-
-This repository provides an end-to-end solution for users who want to query their data with natural language. It includes a well designed ingestion mechanism for multiple file types, an easy deployment, and a support team for maintenance. The accelerator demonstrates both Push or Pull Ingestion; the choice of orchestration (Semantic Kernel, LangChain, OpenAI Functions or [Prompt Flow](docs/prompt_flow.md)) and should be the minimum components needed to implement a RAG pattern. It is not intended to be put into Production as-is without experimentation or evaluation of your data. It provides the following features:
-
-* Chat with an Azure OpenAI model using your own data
-* Upload and process your documents
-* Index public web pages
-* Easy prompt configuration
-* Multiple chunking strategies
-
-### When should you use this repo?
-
-If you need to customize your scenario beyond what [Azure OpenAI on your data](https://learn.microsoft.com/azure/ai-services/openai/concepts/use-your-data) offers out-of-the-box, use this repository.
-By default, this repo comes with one specific set of RAG configurations including but not limited to: chunk size, overlap, retrieval/search type and system prompt. It is important that you evaluate the retrieval/search and the generation of the answers for your data and tune these configurations accordingly before you use this repo in production. For a starting point to understand and perform RAG evaluations, we encourage you to look into the [RAG Experiment Accelerator](https://github.com/microsoft/rag-experiment-accelerator).
-
-The accelerator presented here provides several options, for example:
-* The ability to ground a model using both data and public web pages
-* A backend with support for 'custom' and 'On Your Data' [conversation flows](./docs/conversation_flow_options.md)
-* Advanced prompt engineering capabilities
-* An admin site for ingesting/inspecting/configuring your dataset on the fly
-* Push or Pull model for data ingestion:  See [integrated vectorization](./docs/integrated_vectorization.md) documentation for more details
-* Running a Retrieval Augmented Generation (RAG) solution locally
-
-*Have you seen [ChatGPT + Enterprise data with Azure OpenAI and AI Search demo](https://github.com/Azure-Samples/azure-search-openai-demo)? If you would like to experiment: Play with prompts, understanding RAG pattern different implementation approaches, see how different features interact with the RAG pattern and choose the best options for your RAG deployments, take a look at that repo.
-
-Here is a comparison table with a few features offered by Azure, an available GitHub demo sample and this repo, that can provide guidance when you need to decide which one to use:
-
-| Name	| Feature or Sample? |	What is it? | When to use? |
-| ---------|---------|---------|---------|
-|["Percy AI" Enterprise AI](https://aka.ms/ChatWithYourDataSolutionAccelerator) - (This repo)	| Azure sample | End-to-end baseline RAG pattern sample that uses Azure AI Search as a retriever.	| This sample should be used by Developers when the  RAG pattern implementations provided by Azure are not able to satisfy business requirements. This sample provides a means to customize the solution. Developers must add their own code to meet requirements, and adapt with best practices according to individual company policies. |
-|[Azure OpenAI on your data](https://learn.microsoft.com/azure/ai-services/openai/concepts/use-your-data) | Azure feature | Azure OpenAI Service offers out-of-the-box, end-to-end RAG implementation that uses a REST API or the web-based interface in the Azure AI Studio to create a solution that connects to your data to enable an enhanced chat experience with Azure OpenAI ChatGPT models and Azure AI Search. | This should be the first option considered for developers that need an end-to-end solution for Azure OpenAI Service with an Azure AI Search retriever. Simply select supported data sources, that ChatGPT model in Azure OpenAI Service , and any other Azure resources needed to configure your enterprise application needs. |
-|[Azure Machine Learning prompt flow](https://learn.microsoft.com/azure/machine-learning/concept-retrieval-augmented-generation)	| Azure feature | RAG in Azure Machine Learning is enabled by integration with Azure OpenAI Service for large language models and vectorization. It includes support for Faiss and Azure AI Search as vector stores, as well as support for open-source offerings, tools, and frameworks such as LangChain for data chunking. Azure Machine Learning prompt flow offers the ability to test data generation, automate prompt creation, visualize prompt evaluation metrics, and integrate RAG workflows into MLOps using pipelines.  | When Developers need more control over processes involved in the development cycle of LLM-based AI applications, they should use Azure Machine Learning prompt flow to create executable flows and evaluate performance through large-scale testing. |
-|[ChatGPT + Enterprise data with Azure OpenAI and AI Search demo](https://github.com/Azure-Samples/azure-search-openai-demo) | Azure sample | RAG pattern demo that uses Azure AI Search as a retriever. | Developers who would like to use or present an end-to-end demonstration of the RAG pattern should use this sample. This includes the ability to deploy and test different retrieval modes, and prompts to support business use cases. |
-|[RAG Experiment Accelerator](https://github.com/microsoft/rag-experiment-accelerator) | Tool |The RAG Experiment Accelerator is a versatile tool that helps you conduct experiments and evaluations using Azure AI Search and RAG pattern. | RAG Experiment Accelerator is to make it easier and faster to run experiments and evaluations of search queries and quality of response from OpenAI. This tool is useful for researchers, data scientists, and developers who want to, Test the performance of different Search and OpenAI related hyperparameters. |
-
-
-### Key features
-- **Private LLM access on your data**: Get all the benefits of ChatGPT on your private, unstructured data.
-- **Single application access to your full data set**: Minimize endpoints required to access internal company knowledgebases. Reuse the same backend with the [Microsoft Teams Extension](docs/teams_extension.md)
-- **Natural language interaction with your unstructured data**: Use natural language to quickly find the answers you need and ask follow-up queries to get the supplemental details, including [Speech-to-text](docs/speech_to_text.md).
-- **Easy access to source documentation when querying**: Review referenced documents in the same chat window for additional context.
-- **Data upload**: Batch upload documents of [various file types](docs/supported_file_types.md)
-- **Accessible orchestration**: Prompt and document configuration (prompt engineering, document processing, and data retrieval)
-
-
-**Note**: The current model allows users to ask questions about unstructured data, such as PDF, text, and docx files. See the [supported file types](docs/supported_file_types.md).
-
-### Target end users
-Company personnel (employees, executives) looking to research against internal unstructured company data would leverage this accelerator using natural language to find what they need quickly.
-
-This accelerator also works across industry and roles and would be suitable for any employee who would like to get quick answers with a ChatGPT experience against their internal unstructured company data.
-
-Tech administrators can use this accelerator to give their colleagues easy access to internal unstructured company data. Admins can customize the system configurator to tailor responses for the intended audience.
-
-
-### Use Case scenarios
-
-#### Financial Advisor Scenario
-The sample data illustrates how this accelerator could be used in the financial services industry (FSI).
-
-In this scenario, a financial advisor is preparing for a meeting with a potential client who has expressed interest in Woodgrove Investments’ Emerging Markets Funds. The advisor prepares for the meeting by refreshing their understanding of the emerging markets fund's overall goals and the associated risks.
-
-Now that the financial advisor is more informed about Woodgrove’s Emerging Markets Funds, they're better equipped to respond to questions about this fund from their client.
-
-#### Contract Review and Summarization Assistant scenario
-Additionally, we have implemented a Legal Review and Summarization Assistant scenario to demonstrate how this accelerator can be utilized in any industry. The Legal Review and Summarization Assistant helps professionals manage and interact with a large collection of documents efficiently. For more details, refer to the [Contract Review and Summarization Assistant README](docs/contract_assistance.md).
-
-Note: Some of the sample data included with this accelerator was generated using AI and is for illustrative purposes only.
-
-
-#### Employee Onboarding Scenario
-The sample data illustrates how this accelerator could be used for an employee onboarding scenario in across industries.
-
-In this scenario, a newly hired employee is in the process of onboarding to their organization. Leveraging the Enterprise AI, she navigates through the extensive offerings of her organization’s health and retirement benefits. With the newly integrated chat history capabilities, they can revisit previous conversations, ensuring continuity and context across multiple days of research. This functionality allows the new employee to efficiently gather and consolidate information, streamlining their onboarding experience. [For more details, refer to the README](docs/employee_assistance.md).
-
-
----
-
-![One-click Deploy](/docs/images/oneClickDeploy.png)
-## Deploy
-### Pre-requisites
-- Azure subscription - [Create one for free](https://azure.microsoft.com/free/) with owner access.
-- Approval to use Azure OpenAI services with your Azure subcription. To apply for approval, see [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/overview#how-do-i-get-access-to-azure-openai).
-- [Enable custom Teams apps and turn on custom app uploading](https://learn.microsoft.com/en-us/microsoftteams/platform/concepts/build-and-test/prepare-your-o365-tenant#enable-custom-teams-apps-and-turn-on-custom-app-uploading) (optional: Teams extension only)
-
-### Products used
-- Azure App Service
-- Azure Application Insights
-- Azure Bot
-- Azure OpenAI
-- Azure Document Intelligence
-- Azure Function App
-- Azure Search Service
-- Azure Storage Account
-- Azure Speech Service
-- Azure CosmosDB
-- Teams (optional: Teams extension only)
-
-### Required licenses
-- Microsoft 365 (optional: Teams extension only)
-
-### Pricing Considerations
-
-This Enterprise AI deploys multiple resources. Evaluate the cost of each component prior to deployment.
-
-The following are links to the pricing details for some of the resources:
-- [Azure OpenAI service pricing](https://azure.microsoft.com/pricing/details/cognitive-services/openai-service/). GPT and embedding models are charged separately.
-- [Azure AI Search pricing](https://azure.microsoft.com/pricing/details/search/). AI Search core service and semantic ranker are charged separately.
-- [Azure Blob Storage pricing](https://azure.microsoft.com/pricing/details/storage/blobs/)
-- [Azure Functions pricing](https://azure.microsoft.com/pricing/details/functions/)
-- [Azure AI Document Intelligence pricing](https://azure.microsoft.com/pricing/details/ai-document-intelligence/)
-- [Azure Web App Pricing](https://azure.microsoft.com/pricing/details/app-service/windows/)
-
-### Deploy instructions
-
-There are two choices; the "Deploy to Azure" offers a one click deployment where you don't have to clone the code, alternatively if you would like a developer experience, follow the [Local deployment instructions](./docs/LOCAL_DEPLOYMENT.md).
-
-The demo, which uses containers pre-built from the main branch is available by clicking this button:
+### Project Name
+Percy AI Enterprise AI
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FSasidharPV%2FpercyAI%2Fmain%2Finfra%2Fmain.json)
 
+### Description
+This project is a solution accelerator that allows users to interact with their data using natural language queries. It leverages Azure services and various tools to process, analyze, and interact with data.
 
-When Deployment is complete, follow steps in [Set Up Authentication in Azure App Service](./docs/azure_app_service_auth_setup.md) to add app authentication to your web app running on Azure App Service
+## Directory Structure
 
-**Note**: The default configuration deploys an OpenAI Model "gpt-35-turbo" with version 0613. However, not all
-locations support this version. If you're deploying to a location that doesn't support version 0613, you'll need to
-switch to a lower version. To find out which versions are supported in different regions, visit the
-[GPT-35 Turbo Model Availability](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models#gpt-35-turbo-model-availability) page.
+### Root Directory
+-
 
-### Testing the deployment
-1. Navigate to the admin site, where you can upload documents. It will be located at:
+.env.sample
 
-    `https://web-{RESOURCE_TOKEN}-admin.azurewebsites.net/`
+: Sample environment variables file.
+-
 
-    Where `{RESOURCE_TOKEN}` is uniquely generated during deployment. This is a combination of your subscription and the name of the resource group. Then select **Ingest Data** and add your data. You can find sample data in the `/data` directory.
+.pre-commit-config.yaml
 
-    ![A screenshot of the admin site.](./docs/images/admin-site.png)
+: Configuration for pre-commit hooks.
+-
 
+azure.yaml
 
-2. Navigate to the web app to start chatting on top of your data. The web app can be found at:
+: Azure configuration file.
+-
 
-    `https://web-{RESOURCE_TOKEN}.azurewebsites.net/`
+Makefile
 
+: Makefile for managing tasks.
+-
 
-    ![A screenshot of the chat app.](./docs/images/web-unstructureddata.png)
+package-lock.json
 
-\
-\
-![Supporting documentation](/docs/images/supportingDocuments.png)
-## Supporting documentation
+: Lock file for npm dependencies.
+-
 
-### Resource links
+pyproject.toml
 
-This Enterprise AI deploys the following resources. It's critical to comprehend the functionality of each. Below are the links to their respective documentation:
-- [Application Insights overview - Azure Monitor | Microsoft Learn](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview?tabs=net)
-- [Azure OpenAI Service - Documentation, quickstarts, API reference - Azure AI services | Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/use-your-data)
-- [Using your data with Azure OpenAI Service - Azure OpenAI | Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/use-your-data)
-- [Content Safety documentation - Quickstarts, Tutorials, API Reference - Azure AI services | Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/content-safety/)
-- [Document Intelligence documentation - Quickstarts, Tutorials, API Reference - Azure AI services | Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/?view=doc-intel-3.1.0)
-- [Azure Functions documentation | Microsoft Learn](https://learn.microsoft.com/en-us/azure/azure-functions/)
-- [Azure Cognitive Search documentation | Microsoft Learn](https://learn.microsoft.com/en-us/azure/search/)
-- [Speech to text documentation - Tutorials, API Reference - Azure AI services - Azure AI services | Microsoft Learn](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/index-speech-to-text)
-- [Bots in Microsoft Teams - Teams | Microsoft Learn](https://learn.microsoft.com/en-us/microsoftteams/platform/bots/what-are-bots) (Optional: Teams extension only)
+: Configuration file for Poetry.
 
-### Licensing
+### Code Directory
+#### Backend
+- `app.py`: Entry point for the application.
+- `create_app.py`: Contains the function to create the application.
+- `Admin.py`: Admin app for the solution accelerator.
+- `Dockerfile`: Dockerfile for the backend.
+- `function_app.py`: Azure Functions app configuration.
+- `host.json`: Configuration for Azure Functions host.
+- `setupEnv.sh`: Script to set up the environment.
+- `tasks.json`: VS Code tasks configuration.
+- `extensions.json`: VS Code extensions configuration.
+- `launch.json`: VS Code launch configuration.
+- `settings.json`: VS Code settings configuration.
 
-This repository is licensed under the [MIT License](LICENSE.md).
+#### Utilities
+- `helpers`: Contains various helper modules for interacting with Azure services, configuration, logging, etc.
+- `document_chunking`: Modules for chunking documents.
+- `document_loading`: Modules for loading documents.
+- `embedders`: Modules for embedding documents.
+- `orchestrator`: Modules for orchestrating the conversation flow.
+- `parser`: Modules for parsing responses.
+- `plugins`: Plugins for additional functionalities.
+- `search`: Modules for searching documents.
 
-The data set under the /data folder is licensed under the [CDLA-Permissive-2 License](CDLA-Permissive-2.md).
+#### API
+- `chat_history.py`: API for handling chat history.
+- `auth_utils.py`: Utilities for authentication.
+- `cosmosdb.py`: Utilities for interacting with Cosmos DB.
 
-## Disclaimers
-This Software requires the use of third-party components which are governed by separate proprietary or open-source licenses as identified below, and you must comply with the terms of each applicable license in order to use the Software. You acknowledge and agree that this license does not grant you a license or other right to use any such third-party proprietary or open-source components.
+#### Frontend
+- `src`: Source code for the frontend application.
+  - `api`: API integration for the frontend.
+  - `components`: React components for the frontend.
+  - `pages`: Pages for the frontend application.
+  - `util`: Utility functions for the frontend.
+  - `index.tsx`: Entry point for the frontend application.
+  - `index.css`: Global styles for the frontend application.
+  - `vite-env.d.ts`: TypeScript environment configuration.
+  -
 
-To the extent that the Software includes components or code used in or derived from Microsoft products or services, including without limitation Microsoft Azure Services (collectively, “Microsoft Products and Services”), you must also comply with the Product Terms applicable to such Microsoft Products and Services. You acknowledge and agree that the license governing the Software does not grant you a license or other right to use Microsoft Products and Services. Nothing in the license or this ReadMe file will serve to supersede, amend, terminate or modify any terms in the Product Terms for any Microsoft Products and Services.
+package.json
 
-You must also comply with all domestic and international export laws and regulations that apply to the Software, which include restrictions on destinations, end users, and end use. For further information on export restrictions, visit https://aka.ms/exporting.
+: Configuration file for npm dependencies.
+  - `tsconfig.json`: TypeScript configuration file.
+  - `tsconfig.node.json`: TypeScript configuration for node.
 
-You acknowledge that the Software and Microsoft Products and Services (1) are not designed, intended or made available as a medical device(s), and (2) are not designed or intended to be a substitute for professional medical advice, diagnosis, treatment, or judgment and should not be used to replace or as a substitute for professional medical advice, diagnosis, treatment, or judgment. Customer is solely responsible for displaying and/or obtaining appropriate consents, warnings, disclaimers, and acknowledgements to end users of Customer’s implementation of the Online Services.
+### Infra Directory
+- `app`: Bicep templates for deploying the application.
+- `core`: Core infrastructure components.
+- `prompt-flow`: Configuration for Azure Prompt Flow.
+- `workbooks`: Workbooks for monitoring and logging.
 
-You acknowledge the Software is not subject to SOC 1 and SOC 2 compliance audits. No Microsoft technology, nor any of its component technologies, including the Software, is intended or made available as a substitute for the professional advice, opinion, or judgement of a certified financial services professional. Do not use the Software to replace, substitute, or provide professional financial advice or judgment.
+### Scripts Directory
+- `generate_arm_templates.sh`: Script to generate ARM templates.
+- `package_frontend.ps1`: PowerShell script to package the frontend.
+- `package_frontend.sh`: Shell script to package the frontend.
 
-BY ACCESSING OR USING THE SOFTWARE, YOU ACKNOWLEDGE THAT THE SOFTWARE IS NOT DESIGNED OR INTENDED TO SUPPORT ANY USE IN WHICH A SERVICE INTERRUPTION, DEFECT, ERROR, OR OTHER FAILURE OF THE SOFTWARE COULD RESULT IN THE DEATH OR SERIOUS BODILY INJURY OF ANY PERSON OR IN PHYSICAL OR ENVIRONMENTAL DAMAGE (COLLECTIVELY, “HIGH-RISK USE”), AND THAT YOU WILL ENSURE THAT, IN THE EVENT OF ANY INTERRUPTION, DEFECT, ERROR, OR OTHER FAILURE OF THE SOFTWARE, THE SAFETY OF PEOPLE, PROPERTY, AND THE ENVIRONMENT ARE NOT REDUCED BELOW A LEVEL THAT IS REASONABLY, APPROPRIATE, AND LEGAL, WHETHER IN GENERAL OR IN A SPECIFIC INDUSTRY. BY ACCESSING THE SOFTWARE, YOU FURTHER ACKNOWLEDGE THAT YOUR HIGH-RISK USE OF THE SOFTWARE IS AT YOUR OWN RISK.
+## Key Components
+
+### Configuration and Setup
+- **Docker and Dev Containers**: The project uses Docker and dev containers for setting up the development environment.
+- **VS Code Configuration**: The project includes configuration files for VS Code extensions, settings, tasks, and launch configurations.
+
+### Backend Services
+- **Azure Integration**: The project integrates with various Azure services such as Azure Blob Storage, Azure Search, Azure Form Recognizer, and Azure OpenAI.
+- **Azure Functions**: The project uses Azure Functions to handle HTTP requests and queue triggers for processing documents and generating embeddings.
+
+### Data Processing
+- **Document Chunking and Loading**: The project includes strategies for chunking and loading documents.
+- **Embedding and Search**: The project uses various embedders and search handlers to process and search documents.
+
+### Conversation and Orchestration
+- **Orchestrators**: Different orchestration strategies are implemented to handle user messages and generate responses.
+- **Plugins and Tools**: Various tools and plugins are used for question answering, text processing, and post-answer validation.
+
+### Frontend
+- **Components**: The frontend includes components for displaying answers and handling user interactions.
+- **API Integration**: The frontend interacts with the backend through API calls.
+
+### Utilities and Helpers
+- **Environment and Configuration**: Helper classes for managing environment variables and configuration settings.
+- **Logging and Safety**: Tools for logging conversations and ensuring content safety.
+
+## How to Run
+
+### Prerequisites
+- Docker
+- Node.js
+- Python 3.10+
+- Poetry
+
+### Setup
+1. Clone the repository.
+2. Copy
+
+.env.sample
+
+ to `.env` and update the environment variables.
+3. Run `docker-compose up` to start the services.
+
+### Development
+- Use the provided VS Code configuration for a seamless development experience.
+- Run `make` to execute tasks defined in the Makefile.
+
+### Deployment
+- Use the provided Bicep templates to deploy the infrastructure to Azure.
+- Use the provided scripts to package and deploy the frontend and backend.
+
+## Conclusion
+This documentation provides an overview of the project structure, key components, and instructions for setting up and running the project.
+
+Sure, let's go through the flow of the application step-by-step:
+
+### 1. Environment Setup
+- **Docker and Dev Containers**: The project uses Docker to create a consistent development environment. The `Dockerfile` and `devcontainer.json` files define the environment, including necessary dependencies and tools.
+- **VS Code Configuration**: The project includes configuration files (`extensions.json`, `launch.json`, `settings.json`, `tasks.json`) to set up the development environment in Visual Studio Code.
+
+### 2. Backend Services
+- **Azure Functions**: The backend is built using Azure Functions, which handle HTTP requests and queue triggers for processing documents and generating embeddings. Key files include:
+  - `function_app.py`: Configures the Azure Functions app.
+  - `host.json`: Configures the Azure Functions host.
+  - `add_url_embeddings.py`, `batch_push_results.py`, `batch_start_processing.py`, `get_conversation_response.py`: Define the functions for processing documents and handling chat requests.
+
+### 3. Data Processing
+- **Document Chunking and Loading**: The project includes various strategies for chunking and loading documents. Key files include:
+  - `chunking_strategy.py`, `document_chunking_base.py`, `fixed_size_overlap.py`, `layout.py`, `page.py`, `paragraph.py`: Define different chunking strategies.
+  - `document_loading_base.py`, `read.py`, `web.py`, `word_document.py`: Define different loading strategies.
+
+- **Embedding and Search**: The project uses various embedders and search handlers to process and search documents. Key files include:
+  - `embedder_base.py`, `embedder_factory.py`, `integrated_vectorization_embedder.py`, `push_embedder.py`: Define different embedding strategies.
+  - `azure_search_handler.py`, `integrated_vectorization_search_handler.py`, `search_handler_base.py`, `search.py`: Define different search handlers.
+
+### 4. Conversation and Orchestration
+- **Orchestrators**: Different orchestration strategies are implemented to handle user messages and generate responses. Key files include:
+  - `orchestration_strategy.py`, `orchestrator_base.py`, `open_ai_functions.py`, `lang_chain_agent.py`, `semantic_kernel.py`, `prompt_flow.py`: Define different orchestration strategies.
+
+- **Plugins and Tools**: Various tools and plugins are used for question answering, text processing, and post-answer validation. Key files include:
+  - `question_answer_tool.py`, `text_processing_tool.py`, `post_prompt_tool.py`, `chat_plugin.py`, `post_answering_plugin.py`: Define different tools and plugins.
+
+### 5. Frontend
+- **Components**: The frontend includes components for displaying answers and handling user interactions. Key files include:
+  - `Answer.tsx`, `Answer.module.css`, `AnswerParser.tsx`: Define the Answer component.
+  - `HistoryButton.tsx`, `HistoryButton.module.css`: Define the HistoryButton component.
+  - `QuestionInput.tsx`, `QuestionInput.module.css`: Define the QuestionInput component.
+  - `Spinner.tsx`, `Spinner.module.css`: Define the Spinner component.
+  - `Cards.tsx`, `Cards.module.css`: Define the Cards component.
+  - `Chat.tsx`, `Chat.module.css`: Define the Chat component.
+  - `ChatHistoryList.tsx`, `ChatHistoryListItem.tsx`, `ChatHistoryPanel.module.css`: Define the ChatHistory components.
+  - `Layout.tsx`, `Layout.module.css`: Define the Layout component.
+  - `NoPage.tsx`: Define the NoPage component.
+
+- **API Integration**: The frontend interacts with the backend through API calls. Key files include:
+  - `api.ts`, `models.ts`, `index.ts`: Define the API integration.
+
+### 6. Utilities and Helpers
+- **Environment and Configuration**: Helper classes for managing environment variables and configuration settings. Key files include:
+  - `env_helper.py`, `config_helper.py`: Define environment and configuration helpers.
+
+- **Logging and Safety**: Tools for logging conversations and ensuring content safety. Key files include:
+  - `conversation_logger.py`, `content_safety_checker.py`: Define logging and safety tools.
+
+### 7. Infrastructure
+- **Bicep Templates**: The project uses Bicep templates to deploy the infrastructure to Azure. Key files include:
+  -
+
+app
+
+: Contains Bicep templates for deploying the application.
+  -
+
+core
+
+: Contains core infrastructure components.
+  -
+
+prompt-flow
+
+: Contains configuration for Azure Prompt Flow.
+  -
+
+workbooks
+
+: Contains workbooks for monitoring and logging.
+
+### 8. Scripts
+- **Scripts**: The project includes scripts for generating ARM templates and packaging the frontend. Key files include:
+  - `generate_arm_templates.sh`: Script to generate ARM templates.
+  - `package_frontend.ps1`: PowerShell script to package the frontend.
+  - `package_frontend.sh`: Shell script to package the frontend.
+
+### Flow Summary
+1. **Setup**: Set up the development environment using Docker and VS Code configurations.
+2. **Backend**: Use Azure Functions to handle HTTP requests and queue triggers for processing documents and generating embeddings.
+3. **Data Processing**: Chunk and load documents, then embed and search them using various strategies.
+4. **Conversation**: Handle user messages and generate responses using different orchestration strategies.
+5. **Frontend**: Display answers and handle user interactions using React components and API integration.
+6. **Utilities**: Manage environment variables, configuration settings, logging, and content safety.
+7. **Infrastructure**: Deploy the infrastructure to Azure using Bicep templates.
+8. **Scripts**: Use scripts to generate ARM templates and package the frontend.
+
+This flow provides a comprehensive overview of how the application works and how its various components interact with each other.
+
+Sure, let's dive into the backend functions and explain each one.
+
+### Backend Functions Overview
+The backend functions are implemented using Azure Functions, which handle HTTP requests and queue triggers for processing documents and generating embeddings. These functions are defined in various Python files and are responsible for different tasks related to data processing and interaction.
+
+### Key Backend Functions
+
+#### 1. `add_url_embeddings.py`
+This function handles the addition of URL embeddings.
+
+- **Route**: `AddURLEmbeddings`
+- **Description**: This function processes a URL provided in the request, retrieves the content from the URL, and generates embeddings for the content.
+- **Key Steps**:
+  1. Retrieve the URL from the request.
+  2. Fetch the content from the URL.
+  3. Generate embeddings for the content using the appropriate embedder.
+  4. Store the embeddings in the Azure Search index.
+
+#### 2. `batch_push_results.py`
+This function handles the processing of documents from a queue.
+
+- **Queue Trigger**: `doc-processing`
+- **Description**: This function processes messages from the `doc-processing` queue, generates embeddings for the documents, and stores the results.
+- **Key Steps**:
+  1. Retrieve the message from the queue.
+  2. Extract the document URL from the message.
+  3. Generate embeddings for the document.
+  4. Store the embeddings in the Azure Search index.
+
+#### 3. `batch_start_processing.py`
+This function initiates the processing of all documents in the storage.
+
+- **Route**: `BatchStartProcessing`
+- **Description**: This function retrieves all documents from the Azure Blob Storage and sends messages to the `doc-processing` queue to initiate processing.
+- **Key Steps**:
+  1. Retrieve all files from the Azure Blob Storage.
+  2. Send a message to the `doc-processing` queue for each file.
+
+#### 4. `get_conversation_response.py`
+This function handles the generation of responses for user queries.
+
+- **Route**: `GetConversationResponse`
+- **Description**: This function processes user queries, generates responses using the appropriate orchestrator, and returns the responses.
+- **Key Steps**:
+  1. Retrieve the user message and conversation history from the request.
+  2. Use the appropriate orchestrator to generate a response.
+  3. Return the generated response to the user.
+
+### Detailed Explanation of Each Function
+
+#### `add_url_embeddings.py`
+```python
+import os
+import logging
+import azure.functions as func
+from utilities.helpers.env_helper import EnvHelper
+from utilities.helpers.embedders.embedder_factory import EmbedderFactory
+
+bp_add_url_embeddings = func.Blueprint()
+logger = logging.getLogger(__name__)
+logger.setLevel(level=os.environ.get("LOGLEVEL", "INFO").upper())
+
+@bp_add_url_embeddings.route(route="AddURLEmbeddings")
+def add_url_embeddings(req: func.HttpRequest) -> func.HttpResponse:
+    env_helper: EnvHelper = EnvHelper()
+    logger.info("Python HTTP trigger function processed a request.")
+
+    # Get URL from request
+    url = req.get_json().get("url", None)
+    if not url:
+        return func.HttpResponse("Please pass a URL on the query string or in the request body", status_code=400)
+
+    # Process URL and generate embeddings
+    embedder = EmbedderFactory.create(env_helper)
+    embedder.embed_file(url)
+
+    return func.HttpResponse("URL embeddings added successfully", status_code=200)
+```
+
+#### `batch_push_results.py`
+```python
+import os
+import logging
+import json
+import azure.functions as func
+from utilities.helpers.env_helper import EnvHelper
+from utilities.helpers.embedders.embedder_factory import EmbedderFactory
+
+bp_batch_push_results = func.Blueprint()
+logger = logging.getLogger(__name__)
+logger.setLevel(level=os.environ.get("LOGLEVEL", "INFO").upper())
+
+@bp_batch_push_results.queue_trigger(arg_name="msg", queue_name="doc-processing", connection="AzureWebJobsStorage")
+def batch_push_results(msg: func.QueueMessage) -> None:
+    message_body = json.loads(msg.get_body().decode("utf-8"))
+    logger.debug("Process Document Event queue function triggered: %s", message_body)
+
+    # Process document and generate embeddings
+    url = message_body.get("data", {}).get("url", "")
+    env_helper: EnvHelper = EnvHelper()
+    embedder = EmbedderFactory.create(env_helper)
+    embedder.embed_file(url)
+```
+
+#### `batch_start_processing.py`
+```python
+import os
+import logging
+import json
+import azure.functions as func
+from utilities.helpers.env_helper import EnvHelper
+from utilities.helpers.azure_blob_storage_client import AzureBlobStorageClient
+
+bp_batch_start_processing = func.Blueprint()
+logger = logging.getLogger(__name__)
+logger.setLevel(level=os.environ.get("LOGLEVEL", "INFO").upper())
+
+@bp_batch_start_processing.route(route="BatchStartProcessing")
+def batch_start_processing(req: func.HttpRequest) -> func.HttpResponse:
+    logger.info("Requested to start processing all documents received")
+    env_helper: EnvHelper = EnvHelper()
+
+    # Retrieve all files from Blob Storage
+    azure_blob_storage_client = AzureBlobStorageClient()
+    files_data = azure_blob_storage_client.get_all_files()
+
+    # Send messages to the queue for each file
+    queue_client = create_queue_client()
+    for file_data in files_data:
+        queue_client.send_message(json.dumps(file_data).encode("utf-8"))
+
+    return func.HttpResponse("Batch processing started", status_code=200)
+```
+
+#### `get_conversation_response.py`
+```python
+import os
+import logging
+import json
+import azure.functions as func
+from utilities.helpers.env_helper import EnvHelper
+from utilities.helpers.orchestrator_helper import Orchestrator
+
+bp_get_conversation_response = func.Blueprint()
+logger = logging.getLogger(__name__)
+logger.setLevel(level=os.environ.get("LOGLEVEL", "INFO").upper())
+
+@bp_get_conversation_response.route(route="GetConversationResponse")
+async def get_conversation_response(req: func.HttpRequest) -> func.HttpResponse:
+    logger.info("Python HTTP trigger function processed a request.")
+
+    # Retrieve user message and conversation history
+    req_body = req.get_json()
+    user_message = req_body["messages"][-1]["content"]
+    conversation_id = req_body["conversation_id"]
+    chat_history = req_body["messages"][:-1]
+
+    # Generate response using orchestrator
+    orchestrator = Orchestrator()
+    response = await orchestrator.handle_message(user_message, chat_history, conversation_id)
+
+    return func.HttpResponse(json.dumps(response), status_code=200)
+```
+
+These functions collectively handle the core backend processing tasks, including document ingestion, embedding generation, and conversation handling.
+
+This repository is a solution accelerator designed to enable users to interact with their data using natural language queries. It leverages various Azure services and tools to process, analyze, and interact with data, providing a seamless experience for users to query and retrieve information from their data sources.
+
+### Key Features and Activities
+
+1. **Data Ingestion and Processing**:
+   - The repository includes functionalities to ingest data from various sources, process it, and generate embeddings for efficient search and retrieval.
+   - Documents can be chunked and loaded using different strategies to optimize processing and storage.
+
+2. **Natural Language Interaction**:
+   - Users can interact with their data using natural language queries. The system processes these queries and generates responses based on the data available.
+   - The application uses various orchestration strategies to handle user messages and generate accurate responses.
+
+3. **Search and Retrieval**:
+   - The repository integrates with Azure Search to provide efficient search and retrieval capabilities.
+   - Embeddings are generated for documents to enable vector-based search, improving the accuracy and relevance of search results.
+
+4. **Frontend Application**:
+   - The frontend application provides a user interface for interacting with the system. It includes components for displaying answers, handling user interactions, and managing the conversation history.
+   - The frontend interacts with the backend through API calls to retrieve data and generate responses.
+
+5. **Backend Services**:
+   - The backend is built using Azure Functions, which handle HTTP requests and queue triggers for processing documents and generating embeddings.
+   - Various helper modules and utilities are included to interact with Azure services, manage configuration, and ensure content safety.
+
+6. **Infrastructure as Code**:
+   - The repository includes Bicep templates for deploying the infrastructure to Azure. This ensures that the deployment process is automated and repeatable.
+   - Scripts are provided to generate ARM templates and package the frontend application.
+
+### Applications in the Repository
+
+1. **Admin Application**:
+   - The admin application provides an interface for managing the system, including configuring settings, monitoring activities, and managing data ingestion and processing.
+
+2. **User Interaction Application**:
+   - The main application allows users to interact with their data using natural language queries. It provides a conversational interface for querying data and retrieving information.
+
+### Type of Application
+
+This repository is a **solution accelerator** for building a **conversational AI application** that interacts with data. It combines natural language processing, search, and retrieval capabilities to provide a seamless experience for users to query and interact with their data. The application leverages various Azure services, including Azure Functions, Azure Search, Azure Form Recognizer, and Azure OpenAI, to process and analyze data, generate embeddings, and handle user queries.
+
+### Summary
+
+- **Purpose**: Enable users to interact with their data using natural language queries.
+- **Key Features**: Data ingestion and processing, natural language interaction, search and retrieval, frontend application, backend services, infrastructure as code.
+- **Applications**: Admin application for managing the system, user interaction application for querying data.
+- **Type**: Conversational AI application and solution accelerator.
+
+This repository provides a comprehensive solution for building a conversational AI application that interacts with data, leveraging the power of Azure services and tools to deliver a seamless and efficient user experience.
