@@ -3134,7 +3134,7 @@
             "value": "[union(variables('tags'), createObject('azd-service-name', 'web-docker'))]"
           },
           "dockerFullImageName": {
-            "value": "fruoccopublic.azurecr.io/rag-webapp"
+            "value": "venkatasasidhar/frontend-percyai:percyaifrontend"
           },
           "appServicePlanId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', parameters('hostingPlanName')), '2022-09-01').outputs.name.value]"
