@@ -1,7 +1,7 @@
 name: cwydsa
 services:
   web:
-    image: fruoccopublic.azurecr.io/rag-webapp
+    image: venkatasasidhar/frontend-percyai:percyaifrontend
     ports:
       - "8080:80"
     env_file:
